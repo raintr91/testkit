@@ -5,6 +5,11 @@ Independent MCP/harness for:
 - `--type=tests`: `/testcase` `/grill-testcase` + `cases:render|check|coverage`
 - `--type=fe`: `/test` `/grill-test` + Playwright `testcase:gen*`
 
+## `/testcase` vs `/test` Contract
+
+- **`/testcase` (tests hub)**: Focused on designing, authoring, and managing test plans (`TC-*.yaml` and `SC-*.md`). Rules and acceptance criteria are sourced from the docs hub. No automation code lives here.
+- **`/test` (FE project)**: Focused on generating and maintaining executable Playwright automation (`tests/e2e/`). Consumes plans from the tests hub as read-only SSOT. Test plans are never authored here.
+
 Installers default to immutable release tag `v0.3.0` and enforce the committed
 lockfile (`pnpm --frozen-lockfile` or `npm ci`). Set `TESTKIT_REF` /
 PowerShell `-Ref` only for an explicit alternate release.

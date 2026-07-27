@@ -44,7 +44,7 @@ export async function resolveSemanticPlan(root, testcase) {
     if (seen.has(name)) continue
     const meta = matcherMeta[name]
     if (!meta) {
-      warnings.push(`unknown semantic matcher "${name}" — add to portal-e2e-test.registry.json`)
+      warnings.push(`unknown semantic matcher "${name}" — add to registries/e2e-test.registry.json`)
       continue
     }
     if (meta.status === 'planned') {

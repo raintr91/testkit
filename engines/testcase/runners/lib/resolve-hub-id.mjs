@@ -1,6 +1,6 @@
 /**
  * Resolve short hub IDs → filesystem paths (docs hub + tests hub).
- * IDs: W-* | API-* | UI-* | CMP-* | CTR-* | TC-* | SC-* | suite id (smoke, …)
+ * IDs: W-* | API-* | UI-* | CMP-* | FLOW-* | DEP-* | TC-* | SC-* | suite id (smoke, …)
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
@@ -213,10 +213,10 @@ export function resolveHubId(repoRoot, id, mode = 'testcase') {
   // CMP-* → all code children
   if (/^CMP-/i.test(id)) {
     const { index: docsIdx } = getDocs()
-    const cmp = (docsIdx.components || []).find(
+    const cmp = (docsIdx.modules || []).find(
       (c) => c.id === id || c.id.startsWith(id) || (c.slug && id.toLowerCase().includes(c.slug)),
     )
-    if (!cmp) throw new Error(`Unknown component ${id}`)
+    if (!cmp) throw new Error(`Unknown module ${id}`)
     const paths = []
     if (mode === 'testcase') {
       for (const screen of cmp.screens || []) {
@@ -244,28 +244,7 @@ export function resolveHubId(repoRoot, id, mode = 'testcase') {
     return { kind: 'component-code', id, paths, notes }
   }
 
-  // CTR-* → screens linked in docs index containers map (optional)
-  if (/^CTR-/i.test(id)) {
-    const testsIdx = mode === 'testcase' ? getTests().index : null
-    let screens = testsIdx?.targets?.[id]?.screens || []
-    if (!screens.length) {
-      screens = getDocs().index.containers?.[id]?.screens || []
-    }
-    if (!screens.length) {
-      // default admin web → pilot screens
-      if (id === 'CTR-admin-web') {
-        return resolveHubId(repoRoot, 'CMP-01', mode)
-      }
-      throw new Error(`No screens mapped for ${id} in docs-index.containers or tests-index.targets`)
-    }
-    const paths = []
-    for (const screen of screens) {
-      const sub = resolveHubId(repoRoot, screen, mode)
-      paths.push(...sub.paths)
-      notes.push(...sub.notes)
-    }
-    return { kind: 'container', id, paths, notes }
-  }
+
 
   // SC-* scenario → cases listed in tests index
   if (/^SC-/i.test(id)) {
@@ -282,7 +261,19 @@ export function resolveHubId(repoRoot, id, mode = 'testcase') {
     return { kind: 'scenario', id, paths, notes }
   }
 
+  // FLOW-* / DEP-* -> Code folder on docs
+  if (/^(FLOW|DEP)-/i.test(id)) {
+    const { root: docsRoot, index: docsIdx } = getDocs()
+    const rel = docsIdx.codeIds?.[id]
+    if (!rel) throw new Error(`Unknown code id ${id} in the docs hub registries/docs-index.json`)
+    const codeDir = absUnder(docsRoot, rel)
+    const spec = preferGenSpec(codeDir)
+    if (!spec) throw new Error(`No spec.yaml or ir/spec.yaml under ${rel}`)
+    notes.push(`codegen input: ${path.relative(repoRoot, spec)}`)
+    return { kind: 'code', id, paths: [spec], notes, codeDir }
+  }
+
   throw new Error(
-    `Unrecognized id "${id}". Use W-|API-|UI-|CMP-|CTR-|TC-|SC-* or suite id (smoke, regression-auth).`,
+    `Unrecognized id "${id}". Use W-|API-|UI-|CMP-|FLOW-|DEP-|TC-|SC-* or suite id (smoke, regression-auth).`,
   )
 }

@@ -6,7 +6,7 @@
 ## Gate
 
 1. [ ] Design `W-*` / rules / acceptance tồn tại trên **docs hub** (SSOT)
-2. [ ] `CAP-*` + `SC-*` (GWT + examples + coverage_plan)
+2. [ ] `surface` → `CMP-*` (module) → `SC-*` (GWT + examples + coverage_plan)
 3. [ ] Mỗi `TC-*` dùng `coverage[]` (không `type`); refs + bridge FE đủ gen
 4. [ ] `registries/tests-index.json` cập nhật
 5. [ ] `pnpm check:plans` · `pnpm cases:render` (MD member VI)

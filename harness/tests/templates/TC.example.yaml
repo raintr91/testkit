@@ -6,12 +6,11 @@ story: |
   When thực hiện thao tác chính
   Then thấy trạng thái thành công
 refs:
-  capability: CAP-admin
-  component: CMP-00
+  module: CMP-01-auth
+  surface: admin
   scenario: SC-EXAMPLE
   example: EX-EXAMPLE-01
-  screen: W-AD-EXAMPLE-001
-  target: CTR-admin-web
+  screen: W-AD-AUTH-001
 coverage: [happy]
 priority: high
 automation: automated

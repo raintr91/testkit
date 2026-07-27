@@ -6,3 +6,4 @@ dist/
 workspace.path
 # Generated — node scripts/platform-workspace-from-repos.mjs --group=<lane>
 platform-*.code-workspace
+pnpm-lock.yaml

@@ -1,9 +1,8 @@
 ---
 id: SC-EXAMPLE
-capability: CAP-admin
-feature: CMP-00
-screen: W-AD-EXAMPLE-001
-target: CTR-admin-web
+module: CMP-01-auth
+surface: admin
+screen: W-AD-AUTH-001
 rules:
   - RUL-00-example
 coverage_plan:
@@ -19,10 +18,9 @@ Rule chi tiết trên **docs hub** (chỉ cite id).
 | | |
 |--|--|
 | **Scenario** | `SC-EXAMPLE` |
-| **Capability** | `CAP-admin` |
-| **Component** | `CMP-00` |
-| **Screen** | `W-AD-EXAMPLE-001` |
-| **Target** | `CTR-admin-web` |
+| **Module** | `CMP-01-auth` |
+| **Surface** | `admin` |
+| **Screen** | `W-AD-AUTH-001` |
 
 ## Vì sao quan trọng
 

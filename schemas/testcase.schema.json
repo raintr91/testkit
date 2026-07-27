@@ -34,20 +34,26 @@
     },
     "refs": {
       "type": "object",
-      "required": ["capability", "screen", "scenario", "target"],
+      "required": ["screen", "scenario"],
       "anyOf": [
+        { "required": ["module"] },
         { "required": ["component"] },
         { "required": ["feature"] }
       ],
       "properties": {
+        "surface": { "type": "string" },
+        "module": { "type": "string", "pattern": "^(CMP|DEP|FLOW)-.*$" },
         "capability": { "type": "string" },
         "component": { "type": "string" },
         "feature": { "type": "string" },
         "rule": { "type": "string" },
-        "scenario": { "type": "string" },
+        "scenario": { "type": "string", "pattern": "^SC-.*$" },
         "example": { "type": "string" },
-        "screen": { "type": "string" },
-        "target": { "type": "string" },
+        "screen": { "type": "string", "pattern": "^(W|API|UI)-.*$" },
+        "target": { 
+          "type": "string",
+          "not": { "pattern": "^CTR-" }
+        },
         "api": { "type": "string" }
       }
     },

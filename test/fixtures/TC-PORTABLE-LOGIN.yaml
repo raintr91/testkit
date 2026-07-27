@@ -3,6 +3,9 @@ title: portable login generation
 coverage:
   - happy
 refs:
+  module: CMP-01-auth
+  surface: admin
+  scenario: SC-LOGIN
   screen: W-AUTH-001
 genType: e2e
 feature: auth

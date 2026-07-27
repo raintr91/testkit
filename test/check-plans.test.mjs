@@ -17,8 +17,8 @@ function validCase(refs = { component: 'CMP-ORDERS' }) {
     coverage: ['happy'],
     refs: {
       capability: 'CAP-ORDERS',
-      screen: 'SCR-ORDER-CREATE',
-      scenario: 'SCN-CREATE',
+      screen: 'W-ORDER-CREATE',
+      scenario: 'SC-CREATE',
       target: 'portal',
       ...refs,
     },
@@ -45,13 +45,12 @@ test('check-plans accepts a valid testcase fixture', (t) => {
   assert.match(result.stdout, /check:plans OK \(1 case\(s\)\)/)
 })
 
-test('check-plans rejects missing refs.capability', (t) => {
+test('check-plans accepts missing refs.capability', (t) => {
   const testcase = validCase()
   delete testcase.refs.capability
   const result = runCheck(t, testcase)
-  assert.equal(result.status, 1)
-  assert.match(result.stderr, /check:plans FAILED/)
-  assert.match(result.stderr, /cases\/TC-ORDERS-CREATE\.yaml: refs\.capability required/)
+  assert.equal(result.status, 0)
+  assert.match(result.stdout, /check:plans OK \(1 case\(s\)\)/)
 })
 
 test('check-plans rejects the removed type field', (t) => {
