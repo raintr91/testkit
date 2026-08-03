@@ -1,6 +1,6 @@
 param(
   [string]$InstallDir = "$HOME\.testkit",
-  [string]$Ref = "v0.3.0",
+  [string]$Ref = "",
   [ValidateSet("tests", "fe")]
   [string]$Type = "tests",
   [switch]$Uninstall
@@ -8,6 +8,20 @@ param(
 
 $ErrorActionPreference = "Stop"
 $BinDir = "$HOME\.local\bin"
+$Repo = if ($env:TESTKIT_REPO) { $env:TESTKIT_REPO } else { "raintr91/Testkit" }
+
+# Use pinned version if set (param or env), otherwise resolve latest release from GitHub
+if (-not $Ref) { $Ref = $env:TESTKIT_REF }
+if (-not $Ref) {
+  try {
+    $release = Invoke-RestMethod "https://api.github.com/repos/$Repo/releases/latest"
+    $Ref = $release.tag_name
+    Write-Host "Installing Testkit $Ref (latest)..."
+  } catch {
+    Write-Error "testkit: could not resolve latest release. Set `$env:TESTKIT_REF=vX.Y.Z or pass -Ref vX.Y.Z to pin a version."
+    exit 1
+  }
+}
 
 if ($Uninstall) {
   Remove-Item "$BinDir\testkit.cmd" -Force -ErrorAction SilentlyContinue

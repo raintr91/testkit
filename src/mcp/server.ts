@@ -1,9 +1,10 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
+import { packageVersion } from '../config/project-root.js'
 import { registerTools } from './tools.js'
 
 export function createServer(): McpServer {
-  const server = new McpServer({ name: 'testkit', version: '0.3.0' })
+  const server = new McpServer({ name: 'testkit', version: packageVersion() })
   registerTools(server)
   return server
 }

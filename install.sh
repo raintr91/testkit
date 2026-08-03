@@ -4,7 +4,19 @@ set -euo pipefail
 REPO="${TESTKIT_REPO:-raintr91/Testkit}"
 INSTALL_DIR="${TESTKIT_INSTALL_DIR:-$HOME/.testkit}"
 BIN_DIR="${TESTKIT_BIN_DIR:-$HOME/.local/bin}"
-REF="${TESTKIT_REF:-v0.3.0}"
+
+# Use pinned version if set, otherwise resolve latest release from GitHub
+if [ -n "${TESTKIT_REF:-}" ]; then
+  REF="$TESTKIT_REF"
+else
+  REF="$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" \
+    | grep '"tag_name"' | head -1 | sed 's/.*"tag_name": *"\([^"]*\)".*/\1/')"
+  if [ -z "$REF" ]; then
+    echo "testkit: could not resolve latest release. Set TESTKIT_REF=vX.Y.Z to pin a version." >&2
+    exit 1
+  fi
+  echo "Installing Testkit $REF (latest)..."
+fi
 
 if [ "${1:-}" = "--uninstall" ]; then
   rm -f "$BIN_DIR/testkit" "$BIN_DIR/testkit-mcp"
