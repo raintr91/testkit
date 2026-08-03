@@ -21,6 +21,12 @@ testkit cases:render -- …
 testkit cases:check -- …
 ```
 
+## Target / ID Resolution Rule
+
+- User prompt MAY specify a screen ID, module ID, or short slug (e.g. `W-AD-AUTH-001`, `CMP-ADM-000`, `login`).
+- Agent MUST use `docskit_route` or `docskit_get_element` (or glob search under `TESTKIT_DOCS_ROOT` / `product/surfaces/...`) to resolve target paths.
+- Do NOT demand full surface/module filesystem paths from the user if an ID or short slug is given.
+
 ## Accelerators (optional)
 
 ```text
