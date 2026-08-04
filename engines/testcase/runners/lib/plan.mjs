@@ -57,6 +57,25 @@ export function buildTestcaseContext(testcase, spec, testcaseFile) {
   const data = testcase.data ?? testcase.testData ?? {}
   const hasNewTabAction = uiActions.some((item) => item.action === 'newTabOpened')
 
+  // Inject Common Scenarios based on #pattern
+  const tags = spec?.tags ?? []
+  const hasDeleteFlow = tags.includes('#pattern: delete-flow')
+  const hasConfirmDialog = tags.includes('#pattern: confirm-dialog')
+
+  if (hasDeleteFlow) {
+    uiVisibility.push({ testId: 'delete-button', expected: 'visible' })
+    uiVisibility.push({ testId: 'confirm-dialog', expected: 'hidden' })
+    clickSteps.push({ action: 'click', testId: 'delete-button' })
+    uiVisibility.push({ testId: 'confirm-dialog', expected: 'visible' })
+  }
+
+  if (hasConfirmDialog) {
+    uiVisibility.push({ testId: 'confirm-button', expected: 'visible' })
+    uiVisibility.push({ testId: 'cancel-button', expected: 'visible' })
+    clickSteps.push({ action: 'click', testId: 'cancel-button' })
+    uiVisibility.push({ testId: 'confirm-dialog', expected: 'hidden' })
+  }
+
   const specRequired = spec?.ui?.testIds?.required ?? []
   const testcaseRequired = testcase.testIds?.required ?? []
   const missingInSpec = testcaseRequired.filter((id) => !specRequired.includes(id))
