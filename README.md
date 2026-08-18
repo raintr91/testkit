@@ -10,7 +10,7 @@ Independent MCP/harness for:
 - **`/testcase` (tests hub)**: Focused on designing, authoring, and managing test plans (`TC-*.yaml` and `SC-*.md`). Rules and acceptance criteria are sourced from the docs hub. No automation code lives here.
 - **`/test` (FE project)**: Focused on generating and maintaining executable Playwright automation (`tests/e2e/`). Consumes plans from the tests hub as read-only SSOT. Test plans are never authored here.
 
-Installers automatically resolve the **latest release** from GitHub. They enforce the committed
+Installers automatically resolve the **latest tag** from GitHub. They enforce the committed
 lockfile (`pnpm --frozen-lockfile` or `npm ci`). To install a specific version, set `TESTKIT_REF`
 before running the curl command:
 
