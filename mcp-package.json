@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "package": "@platform/testkit",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "types": [
     "tests",
     "fe"

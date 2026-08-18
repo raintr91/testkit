@@ -76,7 +76,7 @@ Advanced uninstall filters:
             [--project-root <path>] [--keep-mcp] [--yes]
 
   cases:render|cases:check|cases:coverage [--project-root <path>] -- …engine args
-  testcase:gen|testcase:gen:dry|e2e-registry [--project-root <path>] [--tests-root <path>] [--docs-root <path>] -- …engine args
+  testcase:gen|testcase:gen:dry|testcase:gen:all|e2e-registry [--project-root <path>] [--tests-root <path>] [--docs-root <path>] -- …engine args
   version
 
 Owned skills:
@@ -438,9 +438,10 @@ async function main(): Promise<void> {
       runEngine({ engineRel: ['cases', 'check-coverage.mjs'], projectRoot: root, argv: passthrough(command), env }),
     )
   }
-  if (command === 'testcase:gen' || command === 'testcase:gen:dry') {
+  if (command === 'testcase:gen' || command === 'testcase:gen:dry' || command === 'testcase:gen:all') {
     const argv = passthrough(command)
     if (command.endsWith(':dry') && !argv.includes('--dry-run')) argv.push('--dry-run')
+    if (command.endsWith(':all') && !argv.includes('--all')) argv.push('--all')
     printResult(
       runEngine({
         engineRel: ['testcase', 'runners', 'generate.mjs'],

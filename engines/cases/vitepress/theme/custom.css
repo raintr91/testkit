@@ -1,0 +1,418 @@
+/* Full-width layout — default theme caps doc column at 688px / layout at 1440px */
+:root {
+  --vp-layout-max-width: 100%;
+}
+
+.VPDoc .container {
+  max-width: 100% !important;
+}
+
+.VPDoc.has-aside .content-container,
+.VPDoc .content-container {
+  max-width: none !important;
+}
+
+.VPDoc .content {
+  max-width: none !important;
+}
+
+/* Keep all document text readable on wide layouts. */
+.VPDoc .vp-doc,
+.VPDoc .vp-doc p,
+.VPDoc .vp-doc li,
+.VPDoc .vp-doc table,
+.VPDoc .vp-doc blockquote,
+.VPDoc .vp-doc .custom-block {
+  font-size: 20px;
+}
+
+.VPDoc .vp-doc p,
+.VPDoc .vp-doc li {
+  line-height: 1.75;
+}
+
+.VPDoc .vp-doc code {
+  font-size: 0.9em;
+}
+
+.VPDoc .vp-doc h1 {
+  font-size: 38px;
+}
+
+.VPDoc .vp-doc h2 {
+  font-size: 30px;
+}
+
+.VPDoc .vp-doc h3 {
+  font-size: 24px;
+}
+
+/* Intro two-column cards — palette matches start-here-layers.png (teal/mint + coral) */
+.vp-doc .intro-grid {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  margin: 20px 0 8px;
+}
+
+.vp-doc .intro-card {
+  padding: 20px 28px;
+  border-radius: 32px;
+  border: 1px solid rgb(58 154 140 / 25%);
+  box-shadow:
+    0 8px 24px rgb(31 104 94 / 10%),
+    inset 0 1px 0 rgb(255 255 255 / 45%);
+}
+
+.vp-doc .intro-card--main {
+  flex: 0 0 65%;
+  background: linear-gradient(135deg, rgb(224 244 240 / 90%), rgb(198 233 226 / 75%));
+}
+
+.vp-doc .intro-card--side {
+  flex: 1;
+  background: linear-gradient(135deg, rgb(253 236 230 / 90%), rgb(250 219 209 / 70%));
+  border-color: rgb(240 138 118 / 30%);
+  box-shadow:
+    0 8px 24px rgb(196 92 71 / 10%),
+    inset 0 1px 0 rgb(255 255 255 / 45%);
+}
+
+.vp-doc .intro-card h3 {
+  margin: 0 0 10px;
+  border: none;
+  padding-top: 0;
+}
+
+.vp-doc .intro-card--main h3 {
+  color: #1f685e;
+}
+
+.vp-doc .intro-card--side h3 {
+  color: #b4543d;
+}
+
+.vp-doc .intro-card ul,
+.vp-doc .intro-card ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.vp-doc .intro-card li {
+  margin: 8px 0;
+}
+
+@media (max-width: 960px) {
+  .vp-doc .intro-grid {
+    flex-direction: column;
+  }
+
+  .vp-doc .intro-card--main {
+    flex-basis: auto;
+  }
+}
+
+.dark .vp-doc .intro-card--main {
+  background: linear-gradient(135deg, rgb(31 74 68 / 70%), rgb(23 55 51 / 60%));
+  border-color: rgb(94 190 173 / 30%);
+}
+
+.dark .vp-doc .intro-card--side {
+  background: linear-gradient(135deg, rgb(84 46 38 / 70%), rgb(64 35 29 / 60%));
+  border-color: rgb(240 138 118 / 30%);
+}
+
+.dark .vp-doc .intro-card--main h3 {
+  color: #7fd6c6;
+}
+
+.dark .vp-doc .intro-card--side h3 {
+  color: #f0a08a;
+}
+
+/* Hero image centered at natural size */
+.vp-doc .intro-hero {
+  display: flex;
+  justify-content: center;
+}
+
+/* Plain two-column layout (no card background) */
+.vp-doc .duo-grid {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.vp-doc .duo-col {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+@media (max-width: 960px) {
+  .vp-doc .duo-grid {
+    flex-direction: column;
+  }
+}
+
+/* Business tree uses only its content width; the overview diagram gets remaining space. */
+.vp-doc .tree-overview-grid {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.vp-doc .tree-overview-grid__tree {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.vp-doc .tree-overview-grid__tree div[class*='language-'] {
+  margin: 0;
+}
+
+.vp-doc .tree-overview-grid__diagram {
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .vp-doc .tree-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vp-doc .tree-overview-grid__tree {
+    width: 100%;
+  }
+}
+
+/* Five project-operation phases: illustrated cards with floating step pills. */
+.vp-doc .phase-card {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  margin: 30px 0;
+  padding: 26px;
+  overflow: hidden;
+  border: 1px solid rgb(148 163 184 / 26%);
+  border-radius: 38px;
+  box-shadow:
+    0 14px 36px rgb(15 23 42 / 9%),
+    inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+
+.vp-doc .phase-card--reverse {
+  flex-direction: row-reverse;
+}
+
+.vp-doc .phase-card--lead {
+  background: linear-gradient(135deg, #e8f2ff 0%, #f4f8ff 52%, #dcecff 100%);
+}
+
+.vp-doc .phase-card--member {
+  background: linear-gradient(135deg, #e3f7f1 0%, #f2fbf8 52%, #d5f2e9 100%);
+}
+
+.vp-doc .phase-card--test {
+  background: linear-gradient(135deg, #fff4d6 0%, #fffbef 52%, #fee9b5 100%);
+}
+
+.vp-doc .phase-card--dev {
+  background: linear-gradient(135deg, #eee9ff 0%, #f8f6ff 52%, #e2d9ff 100%);
+}
+
+.vp-doc .phase-card--ship {
+  background: linear-gradient(135deg, #e9eef4 0%, #f7f9fb 52%, #dce4ec 100%);
+}
+
+.vp-doc .phase-card__visual {
+  flex: 0 0 34%;
+  min-width: 0;
+}
+
+.vp-doc .phase-card__visual img {
+  display: block;
+  width: 100%;
+  margin: 0;
+  border-radius: 26px;
+  box-shadow: 0 10px 24px rgb(15 23 42 / 10%);
+}
+
+.vp-doc .phase-card__body {
+  flex: 1 1 66%;
+  min-width: 0;
+}
+
+.vp-doc .phase-card__body h3 {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.vp-doc .phase-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin: 18px 0;
+}
+
+.vp-doc .phase-pills span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 17px;
+  border: 1px solid rgb(100 116 139 / 24%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow:
+    0 5px 14px rgb(15 23 42 / 8%),
+    inset 0 1px 0 rgb(255 255 255 / 80%);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.vp-doc .phase-pills .phase-pill-more {
+  min-width: 48px;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.dark .vp-doc .phase-card {
+  border-color: rgb(148 163 184 / 25%);
+  box-shadow: 0 14px 36px rgb(0 0 0 / 28%);
+}
+
+.dark .vp-doc .phase-card--lead {
+  background: linear-gradient(135deg, #172b46, #1c2637);
+}
+
+.dark .vp-doc .phase-card--member {
+  background: linear-gradient(135deg, #153a33, #1c2f2c);
+}
+
+.dark .vp-doc .phase-card--test {
+  background: linear-gradient(135deg, #493817, #302b21);
+}
+
+.dark .vp-doc .phase-card--dev {
+  background: linear-gradient(135deg, #302454, #292437);
+}
+
+.dark .vp-doc .phase-card--ship {
+  background: linear-gradient(135deg, #293441, #252b32);
+}
+
+.dark .vp-doc .phase-pills span {
+  border-color: rgb(203 213 225 / 20%);
+  background: rgb(15 23 42 / 48%);
+}
+
+@media (max-width: 1000px) {
+  .vp-doc .phase-card,
+  .vp-doc .phase-card--reverse {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vp-doc .phase-card__visual {
+    flex-basis: auto;
+  }
+
+  .vp-doc .phase-card__visual img {
+    max-height: 420px;
+    object-fit: cover;
+  }
+}
+
+/* Optional-scope note used by onboarding pages. */
+.vp-doc .base-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 18px 0 24px;
+  padding: 12px 18px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, var(--vp-c-bg-soft), var(--vp-c-bg-alt));
+  box-shadow:
+    0 6px 18px rgb(0 0 0 / 8%),
+    inset 0 1px 0 rgb(255 255 255 / 35%);
+  line-height: 1.65;
+}
+
+.vp-doc .base-note-mark {
+  flex: 0 0 auto;
+  font-weight: 700;
+  color: var(--vp-c-brand-1);
+}
+
+.vp-doc .base-note em {
+  font-size: 19px;
+}
+
+/* Mermaid labels must keep the size mermaid measured with (page 20px cascade clips nodes).
+   Node boxes are sized at render time using themeVariables.fontSize (18px, see config.ts);
+   any page rule bumping label text afterwards overflows the boxes. Pin every label element. */
+.VPDoc .vp-doc .mermaid,
+.VPDoc .vp-doc .vitepress-mermaid-renderer,
+.VPDoc .vp-doc .mermaid foreignObject div,
+.VPDoc .vp-doc .mermaid foreignObject span,
+.VPDoc .vp-doc .mermaid foreignObject p,
+.VPDoc .vp-doc .mermaid .nodeLabel,
+.VPDoc .vp-doc .mermaid .nodeLabel p,
+.VPDoc .vp-doc .mermaid .edgeLabel,
+.VPDoc .vp-doc .mermaid .edgeLabel p,
+.VPDoc .vp-doc .mermaid .cluster-label,
+.VPDoc .vp-doc .mermaid .cluster-label p {
+  font-size: 18px !important;
+  line-height: 1.4 !important;
+}
+
+/* Mermaid — fill content column (don’t leave half-width empty) */
+.vp-doc .mermaid,
+.vp-doc div[class*='mermaid'],
+.vp-doc .vitepress-mermaid-renderer,
+.vp-doc .mermaid-diagram,
+.vp-doc [class*='MermaidDiagram'] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.vp-doc .mermaid svg,
+.vp-doc .vitepress-mermaid-renderer svg,
+.vp-doc .mermaid-diagram svg,
+.vp-doc pre.mermaid svg {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+  margin-inline: auto;
+}
+
+/* Viewport around zoomable diagrams — use content width */
+.vp-doc .vitepress-mermaid-renderer .diagram-container,
+.vp-doc .vitepress-mermaid-renderer .mermaid-container {
+  width: 100%;
+  min-height: 280px;
+}
+
+/* Per-toolkit illustration in the install catalog */
+.vp-doc .toolkit-illus {
+  display: block;
+  width: 100%;
+  max-width: 460px;
+  margin: 14px 0 18px;
+  border-radius: 16px;
+  border: 1px solid rgb(58 154 140 / 22%);
+  box-shadow:
+    0 10px 26px rgb(31 104 94 / 12%),
+    inset 0 1px 0 rgb(255 255 255 / 45%);
+}
+
+.dark .vp-doc .toolkit-illus {
+  border-color: rgb(94 190 173 / 28%);
+  box-shadow: 0 10px 26px rgb(0 0 0 / 35%);
+}

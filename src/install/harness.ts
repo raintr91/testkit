@@ -8,6 +8,7 @@ import {
   rmdirSync,
   statSync,
   writeFileSync,
+  cpSync,
 } from 'node:fs'
 import { createHash } from 'node:crypto'
 import path from 'node:path'
@@ -280,6 +281,11 @@ export function installHarness(opts: {
   result.written.push(...repoFiles.written)
   result.unchanged.push(...repoFiles.unchanged)
   result.conflicts.push(...repoFiles.conflicts)
+  
+  if (opts.type === 'tests') {
+    injectVitepressScripts(root)
+  }
+
   mkdirSync(path.dirname(manifestFile(root)), { recursive: true })
   writeFileSync(
     manifestFile(root),
@@ -475,4 +481,55 @@ export function uninstallHarness(opts: {
     [...result.deleted, INSTALL_MANIFEST_PATH].map((relative) => path.join(root, relative)),
   )
   return result
+}
+
+function injectVitepressScripts(root: string) {
+  const pkgPath = path.join(root, 'package.json')
+  if (!existsSync(pkgPath)) return
+  try {
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as Record<string, any>
+    let changed = false
+    if (!pkg.scripts) pkg.scripts = {}
+    if (pkg.scripts['tests:build'] !== 'pnpm cases:render && vitepress build') { pkg.scripts['tests:build'] = 'pnpm cases:render && vitepress build'; changed = true }
+    if (pkg.scripts['tests:dev'] !== 'vitepress dev') { pkg.scripts['tests:dev'] = 'vitepress dev'; changed = true }
+    if (pkg.scripts['tests:preview'] !== 'vitepress preview') { pkg.scripts['tests:preview'] = 'vitepress preview'; changed = true }
+
+    if (!pkg.devDependencies) pkg.devDependencies = {}
+
+    const requiredDeps = {
+      '@braintree/sanitize-url': '^7.1.2',
+      'cytoscape': '^3.34.0',
+      'cytoscape-cose-bilkent': '^4.1.0',
+      'dayjs': '^1.11.21',
+      'debug': '^4.4.3',
+      'mermaid': '^11.16.0',
+      'vitepress': 'latest',
+      'vitepress-mermaid-renderer': '^1.1.28',
+      'vitepress-plugin-mermaid': '^2.0.17'
+    }
+
+    for (const [dep, version] of Object.entries(requiredDeps)) {
+      if (!pkg.devDependencies[dep]) {
+        pkg.devDependencies[dep] = version
+        changed = true
+      }
+    }
+
+    if (changed) {
+      writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+    }
+  } catch (e) {
+    // Ignore invalid package.json
+  }
+
+  const vitepressDir = path.join(root, '.vitepress')
+  if (!existsSync(vitepressDir)) mkdirSync(vitepressDir, { recursive: true })
+
+  const sourceVitepressDir = path.join(packageRoot(), 'engines', 'cases', 'vitepress')
+  if (existsSync(sourceVitepressDir)) {
+    cpSync(sourceVitepressDir, vitepressDir, { recursive: true, force: true })
+  }
+
+  const vitepressGitignorePath = path.join(vitepressDir, '.gitignore')
+  writeFileSync(vitepressGitignorePath, 'cache\ndist\n')
 }
