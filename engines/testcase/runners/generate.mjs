@@ -8,7 +8,7 @@ import { buildTestcaseContext } from './lib/plan.mjs'
 import { renderTemplate } from './lib/render.mjs'
 import { resolveSemanticPlan } from './lib/semantic-plan.mjs'
 import { writeOutputs } from './lib/write-files.mjs'
-import { resolveHubId } from './lib/resolve-hub-id.mjs'
+import { resolveHubId, resolveProjectRoot, loadTestsIndex } from './lib/resolve-hub-id.mjs'
 
 const root = path.resolve(process.env.TESTKIT_ROOT || process.cwd())
 
@@ -21,24 +21,26 @@ Handlebars.registerHelper('includes', (value, fragment) => String(value).include
 Handlebars.registerHelper('json', (value) => JSON.stringify(value, null, 2))
 
 function parseArgs(argv) {
-  const options = { dryRun: false, force: false, testcase: null, feature: null, id: null }
+  const options = { dryRun: false, force: false, testcase: null, feature: null, id: null, all: false }
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i]
     if (arg === '--dry-run' || arg === '--dry') options.dryRun = true
     else if (arg === '--force') options.force = true
+    else if (arg === '--all') options.all = true
     else if (arg === '--testcase') options.testcase = argv[++i]
     else if (arg === '--feature') options.feature = argv[++i]
     else if (arg === '--id') options.id = argv[++i]
-    else if (!arg.startsWith('-') && !options.testcase && !options.feature && !options.id) {
+    else if (!arg.startsWith('-') && !options.testcase && !options.feature && !options.id && !options.all) {
       options.testcase = arg
     }
   }
 
-  if (!options.testcase && !options.feature && !options.id) {
+  if (!options.testcase && !options.feature && !options.id && !options.all) {
     throw new Error(
       'Usage: pnpm testcase:gen --id W-AD-AUTH-001|TC-LOGIN-VALID|smoke|CMP-01|SC-LOGIN\n' +
-        '       pnpm testcase:gen --testcase <path> | --feature W-AD-AUTH-001  (screen under tests hub cases/)',
+        '       pnpm testcase:gen --testcase <path> | --feature W-AD-AUTH-001  (screen under tests hub cases/)\n' +
+        '       pnpm testcase:gen --all',
     )
   }
 
@@ -89,6 +91,28 @@ async function generateOne(testcasePath, options) {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2))
+
+  if (options.all) {
+    const testsRoot = process.env.TESTKIT_TESTS_ROOT
+      ? path.resolve(process.env.TESTKIT_TESTS_ROOT)
+      : resolveProjectRoot(root, 'tests')
+    const index = loadTestsIndex(testsRoot)
+    const paths = []
+    for (const [id, rel] of Object.entries(index.codeIds || {})) {
+      if (id.startsWith('TC-')) {
+        const abs = path.resolve(testsRoot, rel)
+        paths.push(abs)
+      }
+    }
+    if (!paths.length) {
+      throw new Error('No TC-*.yaml testcase files resolved under the tests hub')
+    }
+    console.log(`testcase-gen: --all → ${paths.length} file(s)`)
+    for (const testcasePath of paths) {
+      await generateOne(testcasePath, options)
+    }
+    return
+  }
 
   if (options.id) {
     const resolved = resolveHubId(root, options.id, 'testcase')

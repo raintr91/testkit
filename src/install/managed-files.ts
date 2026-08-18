@@ -2,10 +2,17 @@ import { existsSync, lstatSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { TestkitType } from '../config/project-root.js'
 
-export const TESTKIT_PACKAGE_SCRIPTS: Record<string, string> = {
-  'cases:render': 'testkit cases:render --project-root=. --',
-  'check:plans': 'testkit cases:check --project-root=. --',
-  'check:coverage': 'testkit cases:coverage --project-root=. --',
+export const TESTKIT_PACKAGE_SCRIPTS: Record<TestkitType, Record<string, string>> = {
+  tests: {
+    'cases:render': 'testkit cases:render --project-root=. --',
+    'check:plans': 'testkit cases:check --project-root=. --',
+    'check:coverage': 'testkit cases:coverage --project-root=. --',
+  },
+  fe: {
+    'testcase:gen': 'testkit testcase:gen --project-root=. --',
+    'testcase:gen:dry': 'testkit testcase:gen:dry --project-root=. --',
+    'testcase:gen:all': 'testkit testcase:gen --all --project-root=. --',
+  },
 }
 
 const LEGACY_IGNORE_START = '# testkit managed start'
@@ -181,7 +188,8 @@ export function syncManagedRepoFiles(opts: {
   const previousScripts = opts.previous?.packageScripts ?? {}
   const ownedScripts: Record<string, string> = { ...previousScripts }
   const packageFile = path.join(root, 'package.json')
-  if (opts.type === 'tests') {
+  const typeScripts = TESTKIT_PACKAGE_SCRIPTS[opts.type]
+  if (typeScripts) {
     const document = readJsonObject(packageFile)
     if (!document) {
       result.conflicts.push(packageFile)
@@ -195,7 +203,7 @@ export function syncManagedRepoFiles(opts: {
       } else {
         const scripts = (scriptsValue as Record<string, unknown> | undefined) ?? {}
         let changed = false
-        for (const [name, command] of Object.entries(TESTKIT_PACKAGE_SCRIPTS)) {
+        for (const [name, command] of Object.entries(typeScripts)) {
           const current = scripts[name]
           if (current === undefined) {
             scripts[name] = command

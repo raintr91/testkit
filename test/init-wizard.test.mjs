@@ -105,7 +105,7 @@ test('init is idempotent and deinit removes only Testkit-owned repo changes', ()
   const packageJson = JSON.parse(packageAfterFirst)
   assert.equal(packageJson.scripts.member, 'node member.mjs')
   assert.equal(packageJson.dependencies.member, '1.0.0')
-  for (const [name, command] of Object.entries(TESTKIT_PACKAGE_SCRIPTS)) {
+  for (const [name, command] of Object.entries(TESTKIT_PACKAGE_SCRIPTS.tests)) {
     assert.equal(packageJson.scripts[name], command)
   }
   assert.match(ignoreAfterFirst, /^member-cache\/$/m)
@@ -116,7 +116,7 @@ test('init is idempotent and deinit removes only Testkit-owned repo changes', ()
   const manifest = JSON.parse(
     readFileSync(path.join(root, INSTALL_MANIFEST_PATH), 'utf8'),
   )
-  assert.deepEqual(manifest.managed.packageScripts, TESTKIT_PACKAGE_SCRIPTS)
+  assert.deepEqual(manifest.managed.packageScripts, TESTKIT_PACKAGE_SCRIPTS.tests)
   assert.deepEqual(manifest.managed.gitignoreLines, [
     '.cursor/',
     '.agents/',

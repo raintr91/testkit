@@ -21,19 +21,36 @@ function deepMerge(base, over) {
   return out
 }
 
+export function findPlatformReposDir(startDir) {
+  let dir = path.resolve(startDir)
+  while (true) {
+    const file = path.join(dir, 'platform-repos.json')
+    if (existsSync(file)) return dir
+    const parent = path.dirname(dir)
+    if (parent === dir) return null
+    dir = parent
+  }
+}
+
 export function loadPlatformRepos(repoRoot) {
-  let doc = loadJson(path.join(repoRoot, 'platform-repos.json'))
-  if (!doc) throw new Error(`Missing platform-repos.json in ${repoRoot}`)
-  const local = loadJson(path.join(repoRoot, 'platform-repos.local.json'))
+  const dir = findPlatformReposDir(repoRoot)
+  if (!dir) throw new Error(`Missing platform-repos.json in ${repoRoot} or any parent directories`)
+  let doc = loadJson(path.join(dir, 'platform-repos.json'))
+  const local = loadJson(path.join(dir, 'platform-repos.local.json'))
   if (local) doc = deepMerge(doc, local)
   return doc
 }
 
 export function resolveProjectRoot(repoRoot, projectId) {
-  const doc = loadPlatformRepos(repoRoot)
+  const dir = findPlatformReposDir(repoRoot) || repoRoot
+  let doc = loadJson(path.join(dir, 'platform-repos.json'))
+  if (!doc) throw new Error(`Missing platform-repos.json in ${repoRoot} or any parent directories`)
+  const local = loadJson(path.join(dir, 'platform-repos.local.json'))
+  if (local) doc = deepMerge(doc, local)
+
   const proj = doc.projects?.[projectId]
   if (!proj?.root) throw new Error(`Unknown project "${projectId}" in platform-repos.json`)
-  return path.resolve(repoRoot, proj.root)
+  return path.resolve(dir, proj.root)
 }
 
 export function loadDocsIndex(docsRoot) {

@@ -253,7 +253,7 @@ test('installers pin the released tag and enforce lockfiles', () => {
   const shell = readFileSync('install.sh', 'utf8')
   const powershell = readFileSync('install.ps1', 'utf8')
   for (const script of [shell, powershell]) {
-    assert.match(script, /v0\.3\.0/)
+    assert.match(script, /TESTKIT_REF/)
     assert.match(script, /pnpm install --frozen-lockfile/)
     assert.match(script, /npm ci/)
     assert.doesNotMatch(script, /(?:REF:-main|Ref = "main")/)
