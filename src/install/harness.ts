@@ -489,10 +489,6 @@ function injectVitepressScripts(root: string) {
   try {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as Record<string, any>
     let changed = false
-    if (!pkg.scripts) pkg.scripts = {}
-    if (pkg.scripts['tests:build'] !== 'pnpm cases:render && vitepress build') { pkg.scripts['tests:build'] = 'pnpm cases:render && vitepress build'; changed = true }
-    if (pkg.scripts['tests:dev'] !== 'vitepress dev') { pkg.scripts['tests:dev'] = 'vitepress dev'; changed = true }
-    if (pkg.scripts['tests:preview'] !== 'vitepress preview') { pkg.scripts['tests:preview'] = 'vitepress preview'; changed = true }
 
     if (!pkg.devDependencies) pkg.devDependencies = {}
 

@@ -7,6 +7,9 @@ export const TESTKIT_PACKAGE_SCRIPTS: Record<TestkitType, Record<string, string>
     'cases:render': 'testkit cases:render --project-root=. --',
     'check:plans': 'testkit cases:check --project-root=. --',
     'check:coverage': 'testkit cases:coverage --project-root=. --',
+    'tests:build': 'pnpm cases:render && vitepress build',
+    'tests:dev': 'vitepress dev',
+    'tests:preview': 'vitepress preview',
   },
   fe: {
     'testcase:gen': 'testkit testcase:gen --project-root=. --',
