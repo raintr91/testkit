@@ -16,10 +16,10 @@ before running the curl command:
 
 ```bash
 # Install latest (default)
-curl -fsSL https://raw.githubusercontent.com/raintr91/Testkit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/raintr91/testkit/main/install.sh | bash
 
 # Install a specific version
-TESTKIT_REF=v0.3.2 curl -fsSL https://raw.githubusercontent.com/raintr91/Testkit/main/install.sh | bash
+TESTKIT_REF=v0.3.2 curl -fsSL https://raw.githubusercontent.com/raintr91/testkit/main/install.sh | bash
 ```
 
 ```bash
