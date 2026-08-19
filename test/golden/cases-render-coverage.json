@@ -1,6 +1,6 @@
 {
   "render": {
-    "stdout": "cases:render cases/W-AUTH-001/TC-AUTH-HAPPY.md\ncases:render cases/W-AUTH-001/TC-AUTH-VALIDATION.md\ncases:render: OK (2 file(s))\n",
+    "stdout": "cases:render cases/W-AUTH-001/TC-AUTH-HAPPY.md\ncases:render cases/W-AUTH-001/TC-AUTH-VALIDATION.md\ncases:render created index.md\ncases:render created cases/index.md\ncases:render created scenarios/index.md\ncases:render: OK (2 file(s))\n",
     "files": {
       "cases/W-AUTH-001/TC-AUTH-HAPPY.md": "3d108d1cbd77cc7052de9f7fbf7fef136a58d089bee8ddd2220b71ae19aa66ee",
       "cases/W-AUTH-001/TC-AUTH-VALIDATION.md": "093acaf33049d442eb3b67bcbbcb5f02ec710b01bbe5b37634f178f1cb6e4e38"

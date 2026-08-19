@@ -24,6 +24,7 @@ query a workspace-parent graph.
 ## Audit Rules
 
 - **Check Business Descriptions:** When auditing plans, ensure that `description` or `story` fields are present and detailed. Flag plans that have sparse 1-liners or lack clear business context and expected outcomes. Advise the user or the authoring agent to provide richer business logic.
+- **Check YAML Syntax Integrity:** Ensure that the YAML files do not contain raw JavaScript expressions embedded as values (e.g., `"a".repeat(256)`) without being properly wrapped in single quotes. If you spot JS expressions that would cause a YAML parser to crash (`Unexpected scalar at node end`), flag them immediately.
 
 ## Accelerators (optional)
 
