@@ -21,6 +21,13 @@ testkit cases:render -- …
 testkit cases:check -- …
 ```
 
+## Output Rules
+
+- **Rich Business Descriptions:** When generating YAML testcases, you MUST provide a detailed `description` (or `story`) field. Do not leave them empty or write sparse 1-liners.
+- Explain the **Business Context**: Why does this case exist? What is the real-world scenario?
+- Outline the **Expected Outcome**: Detail what should happen from the user's perspective, not just the code execution.
+- Include metadata like `priority`, `status`, `module`, and `tags` if available to make the final generated Markdown robust and human-friendly.
+
 ## Target / ID Resolution Rule
 
 - User prompt MAY specify a screen ID, module ID, or short slug (e.g. `W-AD-AUTH-001`, `CMP-ADM-000`, `login`).

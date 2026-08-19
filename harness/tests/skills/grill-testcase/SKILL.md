@@ -21,6 +21,10 @@ query a workspace-parent graph.
 - Agent MUST use `docskit_route` or `docskit_get_element` (or glob search under `TESTKIT_DOCS_ROOT` / `product/surfaces/...`) to resolve target paths.
 - Do NOT demand full surface/module filesystem paths from the user if an ID or short slug is given.
 
+## Audit Rules
+
+- **Check Business Descriptions:** When auditing plans, ensure that `description` or `story` fields are present and detailed. Flag plans that have sparse 1-liners or lack clear business context and expected outcomes. Advise the user or the authoring agent to provide richer business logic.
+
 ## Accelerators (optional)
 
 ```text
