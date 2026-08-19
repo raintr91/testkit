@@ -143,23 +143,26 @@ export default withMermaid(
         { text: 'Cases', link: '/cases/' },
         { text: 'Plans', link: '/plans/' },
       ],
-      sidebar: [
-        {
-          text: 'Scenarios',
-          collapsed: false,
-          items: getScenariosSidebar(projectRoot),
-        },
-        {
-          text: 'Cases',
-          collapsed: false,
-          items: getCasesSidebar(projectRoot),
-        },
-        {
-          text: 'Plans',
-          collapsed: false,
-          items: getPlansSidebar(projectRoot),
-        },
-      ],
+      sidebar: {
+        '/scenarios/': [
+          {
+            text: 'Scenarios',
+            items: getScenariosSidebar(projectRoot),
+          }
+        ],
+        '/cases/': [
+          {
+            text: 'Cases',
+            items: getCasesSidebar(projectRoot),
+          }
+        ],
+        '/plans/': [
+          {
+            text: 'Plans',
+            items: getPlansSidebar(projectRoot),
+          }
+        ]
+      },
     },
   }),
 )

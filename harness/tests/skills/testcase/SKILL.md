@@ -37,8 +37,10 @@ testkit cases:check -- …
 
 ## Directory Mirroring Rule (Docs SSOT)
 
-Testkit acts as a reflection of the Docs SSOT. When generating YAML test plans, you MUST mirror the directory structure found in the `docs` repository:
-- **Cases:** Test cases for specific screens (`W-*`) or components (`CMP-*`) MUST be placed in `cases/<path-from-docs-surfaces>/`. For example, if a screen is documented at `product/surfaces/admin/auth/W-AD-AUTH-001.md`, the test cases go into `cases/admin/auth/W-AD-AUTH-001/TC-*.yaml`.
+Testkit acts as a reflection of the Docs SSOT. When generating YAML test plans, you MUST mirror the directory structure found in the `docs` repository, but **strip out** the base `product/surfaces` or `product/common` prefix:
+- **Cases:** Test cases for specific screens (`W-*`) or components (`CMP-*`) MUST be placed in `cases/<relative-path>/`. 
+  - For example, if a screen is documented at `product/surfaces/admin/auth/W-AD-AUTH-001.md`, the test cases go into `cases/admin/auth/W-AD-AUTH-001/TC-*.yaml`. Do NOT include `product/surfaces/` in the output path.
+- Always create the YAML files exactly in the mapped path. Do NOT output a flat structure.
 
 ## Accelerators (optional)
 

@@ -23,12 +23,13 @@ Scenarios test business flows across multiple screens (W-*) or components. They 
 ## Target / ID Resolution Rule
 
 - Agent MUST use `docskit_route` or `docskit_get_element` (or glob search under `TESTKIT_DOCS_ROOT`) to locate the relevant `flow-*` documentation for the business process.
+- **Strict Requirement:** You may ONLY author a scenario if a corresponding `flow-*` file exists for that module/process in the docs. If there is no `flow-*` file, do not invent a scenario.
 
 ## Directory Mirroring Rule (Docs SSOT)
 
-Testkit acts as a reflection of the Docs SSOT. When generating YAML scenarios, you MUST mirror the directory structure found in the `docs` repository:
-- Scenarios MUST be placed in `scenarios/<path-from-docs-flow>/`.
-- Do NOT guess folder structures; always map them exactly to where the corresponding SSOT `flow-*` file resides in docs (e.g., if it's at `product/common/flow-checkout.md`, place the scenario in `scenarios/common/flow-checkout/SC-*.yaml`).
+Testkit acts as a reflection of the Docs SSOT. When generating YAML scenarios, you MUST mirror the directory structure found in the `docs` repository, but **strip out** the base `product/` or `product/common/` prefix:
+- Scenarios MUST be placed in `scenarios/<relative-path>/`.
+- Do NOT include `product/` or `product/common/` in the output path. For example, if the flow is at `product/common/auth/flow-checkout.md`, place the scenario in `scenarios/auth/flow-checkout/SC-*.yaml`.
 
 ## Accelerators (optional)
 
