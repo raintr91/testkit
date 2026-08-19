@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 **Owner:** Testkit (`--type=tests`)
 
-Author SC/TC/suites on the current tests hub. Design rules stay on the docs hub.
+Author TC/suites on the current tests hub. Design rules stay on the docs hub.
 Playwright generation is FE `/test`.
 
 Route cross-repo evidence by owner: Functions/W-* through Docskit, plan/docs
@@ -34,6 +34,11 @@ testkit cases:check -- …
 - User prompt MAY specify a screen ID, module ID, or short slug (e.g. `W-AD-AUTH-001`, `CMP-ADM-000`, `login`).
 - Agent MUST use `docskit_route` or `docskit_get_element` (or glob search under `TESTKIT_DOCS_ROOT` / `product/surfaces/...`) to resolve target paths.
 - Do NOT demand full surface/module filesystem paths from the user if an ID or short slug is given.
+
+## Directory Mirroring Rule (Docs SSOT)
+
+Testkit acts as a reflection of the Docs SSOT. When generating YAML test plans, you MUST mirror the directory structure found in the `docs` repository:
+- **Cases:** Test cases for specific screens (`W-*`) or components (`CMP-*`) MUST be placed in `cases/<path-from-docs-surfaces>/`. For example, if a screen is documented at `product/surfaces/admin/auth/W-AD-AUTH-001.md`, the test cases go into `cases/admin/auth/W-AD-AUTH-001/TC-*.yaml`.
 
 ## Accelerators (optional)
 
