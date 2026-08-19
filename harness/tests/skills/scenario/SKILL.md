@@ -19,6 +19,7 @@ Scenarios test business flows across multiple screens (W-*) or components. They 
 - Outline the **Expected Outcome**: Detail what the end-to-end user journey should achieve.
 - Include metadata like `priority`, `status`, `module`, and `tags` if available.
 - **Valid YAML Syntax:** Do NOT write raw JavaScript expressions directly into YAML values. If you need a long string, wrap the exact code expression entirely in single quotes (e.g. `value: '"a".repeat(256)'`).
+- **Concise Naming Convention:** The `id` must be short (e.g., `SC-CHK-01`). The `title` MUST be extremely short and concise (limit 15-20 characters, e.g., `Guest Checkout`, `Refund Flow`). This ensures the Vitepress left menu remains neat and readable. Put all long explanations into the `description` field, not the `title` or `id`.
 
 ## Target / ID Resolution Rule
 

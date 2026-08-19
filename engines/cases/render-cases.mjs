@@ -57,7 +57,8 @@ async function main() {
 }
 
 function renderCaseMarkdown(tc, { h }) {
-  const title = tc.summary || tc.title || tc.id || 'case'
+  const shortTitle = tc.title || tc.name || tc.summary || 'case'
+  const title = tc.id ? `${tc.id}: ${shortTitle}` : shortTitle
   const story = tc.story?.trim()
   const coverage = Array.isArray(tc.coverage) ? tc.coverage.map((c) => `\`${c}\``).join(', ') : MD_NONE
 

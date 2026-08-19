@@ -28,6 +28,7 @@ testkit cases:check -- …
 - Outline the **Expected Outcome**: Detail what should happen from the user's perspective, not just the code execution.
 - Include metadata like `priority`, `status`, `module`, and `tags` if available to make the final generated Markdown robust and human-friendly.
 - **Valid YAML Syntax:** Do NOT write raw JavaScript expressions (like `"a".repeat(256)`) directly into YAML values. YAML is not JS. If you need a long string for test data, generate the actual long string, or wrap the exact code expression entirely in single quotes (e.g. `value: '"a".repeat(256)'`) so the YAML parser does not crash.
+- **Concise Naming Convention:** The `id` must be short (e.g., `TC-AUTH-01`). The `title` MUST be extremely short and concise (limit 15-20 characters, e.g., `Valid Login`, `Empty Email`, `SQLi Check`). This ensures the Vitepress left menu remains neat and readable. Put all long explanations into the `description` field, not the `title` or `id`.
 
 ## Target / ID Resolution Rule
 
