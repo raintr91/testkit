@@ -33,6 +33,26 @@ async function main() {
     n++
     console.log(`cases:render ${path.relative(root, out)}`)
   }
+
+  // Ensure index.md exists for root and main sections
+  const sections = ['', 'cases', 'scenarios', 'plans']
+  for (const section of sections) {
+    const sectionPath = path.join(root, section)
+    const indexPath = path.join(sectionPath, 'index.md')
+    try {
+      if (await listEntries(sectionPath).then(e => e.length > 0)) {
+        try {
+          await readFile(indexPath, 'utf8')
+        } catch {
+          const title = section ? section.charAt(0).toUpperCase() + section.slice(1) : 'Home'
+          const content = `---\nlayout: home\n---\n\n# ${title}\n\nWelcome to ${title}.`
+          await writeFile(indexPath, content, 'utf8')
+          console.log(`cases:render created ${path.relative(root, indexPath)}`)
+        }
+      }
+    } catch {}
+  }
+
   console.log(`cases:render: OK (${n} file(s))`)
 }
 
@@ -45,11 +65,16 @@ function renderCaseMarkdown(tc, { h }) {
     `# ${title}`,
     '',
     story || (tc.summary ? `> ${tc.summary}` : null),
-    story || tc.summary ? '' : null,
+    tc.description ? `\n${tc.description}\n` : null,
+    story || tc.summary || tc.description ? '' : null,
     `- **id:** \`${tc.id ?? ''}\``,
+    tc.module ? `- **Module:** \`${tc.module}\`` : null,
     `- **${h.coverage || 'Coverage'}:** ${coverage}`,
+    tc.status ? `- **Status:** \`${tc.status}\`` : null,
+    tc.priority ? `- **Priority:** \`${tc.priority}\`` : null,
     tc.refs?.scenario ? `- **Scenario:** \`${tc.refs.scenario}\`` : null,
     tc.refs?.rule ? `- **Rule (docs):** \`${tc.refs.rule}\`` : null,
+    tc.tags?.length ? `- **Tags:** ${tc.tags.map(t => `\`${t}\``).join(', ')}` : null,
     '',
     `## ${h.preconditions || 'Preconditions'}`,
     '',
@@ -137,7 +162,7 @@ async function listCaseYaml(dir) {
       out.push(...(await listCaseYaml(p)))
       continue
     }
-    if (entry.isFile() && /^TC-.*\.ya?ml$/i.test(entry.name)) out.push(p)
+    if (entry.isFile() && /^(TC|SC|W|CMP)-.*\.ya?ml$/i.test(entry.name)) out.push(p)
   }
   return out.sort()
 }

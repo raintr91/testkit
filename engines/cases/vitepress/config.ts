@@ -49,6 +49,13 @@ function buildRecursiveSidebar(dirPath: string, urlPrefix: string): any[] {
 
         const subItems = buildRecursiveSidebar(subDirPath, `${urlPrefix}${entry.name}/`)
         
+        if (!link && subItems.length > 0) {
+          const firstLinkedItem = subItems.find((s: any) => s.link)
+          if (firstLinkedItem) {
+            link = firstLinkedItem.link
+          }
+        }
+
         const item: any = { text: title }
         if (link) item.link = link
         if (subItems.length > 0) {
