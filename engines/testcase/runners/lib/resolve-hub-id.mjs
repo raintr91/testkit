@@ -203,7 +203,7 @@ export function resolveHubId(repoRoot, id, mode = 'testcase') {
   }
 
   // Screen / API / UI code folder on docs
-  if (/^(W|API|UI)-/i.test(id)) {
+  if (/^(W|API|UI)-/i.test(id) || /^[a-z]+-[a-z]+-\d{3}(-\d{2,3})+$/i.test(id)) {
     if (mode === 'testcase') {
       const { root: testsRoot, index: testsIdx } = getTests()
       const screenRel = testsIdx.codeIds?.[id] || `cases/${id}`
@@ -227,8 +227,8 @@ export function resolveHubId(repoRoot, id, mode = 'testcase') {
     return { kind: 'code', id, paths: [spec], notes, codeDir }
   }
 
-  // CMP-* → all code children
-  if (/^CMP-/i.test(id)) {
+  // Module (e.g. CMP-ADM-001) → all code children
+  if (/^[A-Z]+-[A-Z]+-\d{3}$/i.test(id)) {
     const { index: docsIdx } = getDocs()
     const cmp = (docsIdx.modules || []).find(
       (c) => c.id === id || c.id.startsWith(id) || (c.slug && id.toLowerCase().includes(c.slug)),
@@ -291,6 +291,6 @@ export function resolveHubId(repoRoot, id, mode = 'testcase') {
   }
 
   throw new Error(
-    `Unrecognized id "${id}". Use W-|API-|UI-|CMP-|FLOW-|DEP-|TC-|SC-* or suite id (smoke, regression-auth).`,
+    `Unrecognized id "${id}". Use W-|API-|UI-|FLOW-|DEP-|TC-|SC-* or hierarchical ID (e.g. cmp-adm-001-01-01), or module ID (CMP-ADM-001), or suite id (smoke, regression-auth).`,
   )
 }
